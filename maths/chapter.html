@@ -14,8 +14,6 @@
         body, html {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
-            background: linear-gradient(to right, #1d557d, #3e8f95);
-            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -29,29 +27,27 @@
             font-size: 2rem;
         }
 
-        .button-container {
+        .buttons-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 10px;
             width: 80%;
             max-width: 400px;
         }
 
-        .button {
+        button {
             width: 100%;
             padding: 10px;
-            margin: 5px;
             font-size: 1rem;
             border: none;
-            background-color: #007BFF;
+            background-color: #1d557d;
             color: white;
-            border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            border-radius: 5px;
         }
 
-        .button:hover {
-            background-color: #0056b3;
+        button:hover {
+            background-color: #3e8f95;
         }
     </style>
 </head>
@@ -59,36 +55,36 @@
 
     <h1>Chapter <span id="chapterNumber"></span></h1>
 
-    <div class="button-container" id="lectureButtons"></div>
+    <div class="buttons-container" id="buttonsContainer"></div>
 
     <script>
         // Get the selected chapter number from local storage
         const chapterNumber = localStorage.getItem('selectedChapter');
         document.getElementById('chapterNumber').textContent = chapterNumber;
 
-        const buttonContainer = document.getElementById('lectureButtons');
+        const buttonsContainer = document.getElementById("buttonsContainer");
 
-        // Generate buttons for lectures and PDFs
+        // Generate Lecture and PDF buttons
         for (let i = 1; i <= 9; i++) {
             // Lecture Button
-            const lectureButton = document.createElement("button");
-            lectureButton.className = "button";
-            lectureButton.textContent = `Lecture ${i}`;
-            lectureButton.onclick = () => {
+            let lectureBtn = document.createElement("button");
+            lectureBtn.textContent = `Lecture ${i}`;
+            lectureBtn.onclick = function () {
                 localStorage.setItem('selectedLecture', i);
                 window.location.href = `chapter${chapterNumber}/lecture.html`;
             };
-            buttonContainer.appendChild(lectureButton);
 
-            // Lecture PDF Button
-            const pdfButton = document.createElement("button");
-            pdfButton.className = "button";
-            pdfButton.textContent = `Lecture ${i} PDF`;
-            pdfButton.onclick = () => {
+            // PDF Button
+            let pdfBtn = document.createElement("button");
+            pdfBtn.textContent = `Lecture ${i} PDF`;
+            pdfBtn.onclick = function () {
                 localStorage.setItem('selectedLecture', i);
-                window.location.href = "lecturepdf.html";
+                window.location.href = `chapter${chapterNumber}/lecturepdf.html`;
             };
-            buttonContainer.appendChild(pdfButton);
+
+            // Append buttons
+            buttonsContainer.appendChild(lectureBtn);
+            buttonsContainer.appendChild(pdfBtn);
         }
     </script>
 
