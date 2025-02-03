@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter - Gtech Poly</title>
+    <title>Chapter</title>
     <style>
         * {
             margin: 0;
@@ -16,188 +16,80 @@
             background-color: #f4f4f9;
             background: linear-gradient(to right, #1d557d, #3e8f95);
             color: white;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            height: 100%;
             display: flex;
             flex-direction: column;
-        }
-
-        .container {
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             text-align: center;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 20px; /* Ensure top part is visible */
-            flex-grow: 1;
         }
 
         h1 {
-            font-size: 2rem;
             margin-bottom: 20px;
+            font-size: 2rem;
         }
 
-        .lecture-list {
+        .button-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 400px;
         }
 
-        .lecture-button,
-        .pdf-button {
-            background-color: #1d557d;
-            color: white;
-            padding: 12px 25px; /* Make buttons wider and reduce height */
-            margin: 8px;
-            border-radius: 5px;
-            text-decoration: none;
+        .button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
             font-size: 1rem;
-            transition: background-color 0.3s;
-            display: inline-block;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .lecture-button:hover,
-        .pdf-button:hover {
-            background-color: #155370;
-        }
-
-        .lecture-button:active,
-        .pdf-button:active {
-            background-color: #0e3e56;
-        }
-
-        .pdf-button {
-            background-color: #3e8f95;
-        }
-
-        .pdf-button:hover {
-            background-color: #2a7080;
-        }
-
-        .pdf-button:active {
-            background-color: #1d557d;
+        .button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Chapter <span id="chapterNumber"></span></h1>
-        <div class="lecture-list" id="lectureList">
-            <!-- Lecture buttons will be dynamically populated here -->
-        </div>
-    </div>
+    <h1>Chapter <span id="chapterNumber"></span></h1>
+
+    <div class="button-container" id="lectureButtons"></div>
 
     <script>
-        // Get the selected chapter from local storage
+        // Get the selected chapter number from local storage
         const chapterNumber = localStorage.getItem('selectedChapter');
-        
-        // Display the chapter number in the heading
         document.getElementById('chapterNumber').textContent = chapterNumber;
 
-        // Define the lecture PDF links for each chapter (up to 9 lectures)
-        const lecturePDFs = {
-            1: [
-                { pdf: 'maths/chapter1/lecture1.pdf' },
-                { pdf: 'maths/chapter1/lecture2.pdf' },
-                { pdf: 'maths/chapter1/lecture3.pdf' },
-                { pdf: 'maths/chapter1/lecture4.pdf' },
-                { pdf: 'maths/chapter1/lecture5.pdf' },
-                { pdf: 'maths/chapter1/lecture6.pdf' },
-                { pdf: 'maths/chapter1/lecture7.pdf' },
-                { pdf: 'maths/chapter1/lecture8.pdf' },
-                { pdf: 'maths/chapter1/lecture9.pdf' }
-            ],
-            2: [
-                { pdf: 'maths/chapter2/lecture1.pdf' },
-                { pdf: 'maths/chapter2/lecture2.pdf' },
-                { pdf: 'maths/chapter2/lecture3.pdf' },
-                { pdf: 'maths/chapter2/lecture4.pdf' },
-                { pdf: 'maths/chapter2/lecture5.pdf' },
-                { pdf: 'maths/chapter2/lecture6.pdf' },
-                { pdf: 'maths/chapter2/lecture7.pdf' },
-                { pdf: 'maths/chapter2/lecture8.pdf' },
-                { pdf: 'maths/chapter2/lecture9.pdf' }
-            ],
-            3: [
-                { pdf: 'maths/chapter3/lecture1.pdf' },
-                { pdf: 'maths/chapter3/lecture2.pdf' },
-                { pdf: 'maths/chapter3/lecture3.pdf' },
-                { pdf: 'maths/chapter3/lecture4.pdf' },
-                { pdf: 'maths/chapter3/lecture5.pdf' },
-                { pdf: 'maths/chapter3/lecture6.pdf' },
-                { pdf: 'maths/chapter3/lecture7.pdf' },
-                { pdf: 'maths/chapter3/lecture8.pdf' },
-                { pdf: 'maths/chapter3/lecture9.pdf' }
-            ],
-            4: [
-                { pdf: 'maths/chapter4/lecture1.pdf' },
-                { pdf: 'maths/chapter4/lecture2.pdf' },
-                { pdf: 'maths/chapter4/lecture3.pdf' },
-                { pdf: 'maths/chapter4/lecture4.pdf' },
-                { pdf: 'maths/chapter4/lecture5.pdf' },
-                { pdf: 'maths/chapter4/lecture6.pdf' },
-                { pdf: 'maths/chapter4/lecture7.pdf' },
-                { pdf: 'maths/chapter4/lecture8.pdf' },
-                { pdf: 'maths/chapter4/lecture9.pdf' }
-            ],
-            5: [
-                { pdf: 'maths/chapter5/lecture1.pdf' },
-                { pdf: 'maths/chapter5/lecture2.pdf' },
-                { pdf: 'maths/chapter5/lecture3.pdf' },
-                { pdf: 'maths/chapter5/lecture4.pdf' },
-                { pdf: 'maths/chapter5/lecture5.pdf' },
-                { pdf: 'maths/chapter5/lecture6.pdf' },
-                { pdf: 'maths/chapter5/lecture7.pdf' },
-                { pdf: 'maths/chapter5/lecture8.pdf' },
-                { pdf: 'maths/chapter5/lecture9.pdf' }
-            ],
-            6: [
-                { pdf: 'maths/chapter6/lecture1.pdf' },
-                { pdf: 'maths/chapter6/lecture2.pdf' },
-                { pdf: 'maths/chapter6/lecture3.pdf' },
-                { pdf: 'maths/chapter6/lecture4.pdf' },
-                { pdf: 'maths/chapter6/lecture5.pdf' },
-                { pdf: 'maths/chapter6/lecture6.pdf' },
-                { pdf: 'maths/chapter6/lecture7.pdf' },
-                { pdf: 'maths/chapter6/lecture8.pdf' },
-                { pdf: 'maths/chapter6/lecture9.pdf' }
-            ]
-        };
+        const buttonContainer = document.getElementById('lectureButtons');
 
-        // Get the lecture list for the selected chapter
-        const lectures = lecturePDFs[chapterNumber] || [];
-
-        // Dynamically generate the lecture buttons
-        const lectureListElement = document.getElementById('lectureList');
-        lectures.forEach((lecture, index) => {
-            const lectureNumber = index + 1;
-
-            // Create Lecture button
-            const lectureButton = document.createElement('button');
-            lectureButton.classList.add('lecture-button');
-            lectureButton.textContent = `Lecture ${lectureNumber}`;
-
-            // Set click event for the lecture button to save the lecture number and redirect
-            lectureButton.addEventListener('click', function() {
-                // Save the lecture number to local storage
-                localStorage.setItem('selectedLecture', lectureNumber);
-
-                // Redirect to the respective lecture page
+        // Generate buttons for lectures and PDFs
+        for (let i = 1; i <= 9; i++) {
+            // Lecture Button
+            const lectureButton = document.createElement("button");
+            lectureButton.className = "button";
+            lectureButton.textContent = `Lecture ${i}`;
+            lectureButton.onclick = () => {
+                localStorage.setItem('selectedLecture', i);
                 window.location.href = `chapter${chapterNumber}/lecture.html`;
-            });
+            };
+            buttonContainer.appendChild(lectureButton);
 
-            // Create PDF button for each lecture
-            const pdfButton = document.createElement('a');
-            pdfButton.classList.add('pdf-button');
-            pdfButton.textContent = `Open Lecture ${lectureNumber} PDF`;
-            pdfButton.href = lecture.pdf;
-            pdfButton.target = '_blank'; // Open the PDF in a new tab
-
-            // Append both the lecture button and PDF button to the list
-            lectureListElement.appendChild(lectureButton);
-            lectureListElement.appendChild(pdfButton);
-        });
+            // Lecture PDF Button
+            const pdfButton = document.createElement("button");
+            pdfButton.className = "button";
+            pdfButton.textContent = `Lecture ${i} PDF`;
+            pdfButton.onclick = () => {
+                localStorage.setItem('selectedLecture', i);
+                window.location.href = "lecturepdf.html";
+            };
+            buttonContainer.appendChild(pdfButton);
+        }
     </script>
 
 </body>
