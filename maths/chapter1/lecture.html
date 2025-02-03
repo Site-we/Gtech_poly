@@ -33,7 +33,7 @@
             width: 80%;
             max-width: 800px;
             background: black;
-            outline: none; /* Removes any focus borders */
+            outline: none;
         }
 
         .error-message {
@@ -79,41 +79,32 @@
         // Load the video URL
         fetchVideoURL();
 
-        // Long-press functionality to change video speed
         let longPressTimer;
-        
-        videoPlayer.addEventListener("mousedown", () => {
+
+        // Long-press functionality to change video speed
+        function startLongPress() {
             longPressTimer = setTimeout(() => {
                 videoPlayer.playbackRate = 2.0; // Set speed to 2x
-            }, 500); // Long press duration (500ms)
-        });
+            }, 500);
+        }
 
-        videoPlayer.addEventListener("mouseup", () => {
+        function cancelLongPress() {
             clearTimeout(longPressTimer);
             videoPlayer.playbackRate = 1.0; // Reset speed to normal
-        });
+        }
 
-        videoPlayer.addEventListener("mouseleave", () => {
-            clearTimeout(longPressTimer);
-            videoPlayer.playbackRate = 1.0; // Ensure speed resets if pointer leaves
-        });
+        // Mouse events
+        videoPlayer.addEventListener("mousedown", startLongPress);
+        videoPlayer.addEventListener("mouseup", cancelLongPress);
+        videoPlayer.addEventListener("mouseleave", cancelLongPress);
 
-        videoPlayer.addEventListener("touchstart", (event) => {
-            event.preventDefault(); // Prevent accidental zooming
-            longPressTimer = setTimeout(() => {
-                videoPlayer.playbackRate = 2.0;
-            }, 500);
-        });
+        // Touch events (Mobile)
+        videoPlayer.addEventListener("touchstart", startLongPress);
+        videoPlayer.addEventListener("touchend", cancelLongPress);
+        videoPlayer.addEventListener("touchcancel", cancelLongPress);
 
-        videoPlayer.addEventListener("touchend", () => {
-            clearTimeout(longPressTimer);
-            videoPlayer.playbackRate = 1.0;
-        });
-
-        videoPlayer.addEventListener("touchcancel", () => {
-            clearTimeout(longPressTimer);
-            videoPlayer.playbackRate = 1.0;
-        });
+        // Prevent long-press context menu (right-click) from appearing
+        videoPlayer.addEventListener("contextmenu", (event) => event.preventDefault());
     </script>
 
 </body>
