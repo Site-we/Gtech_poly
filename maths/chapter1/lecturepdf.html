@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture PDF - Gtech Poly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1d557d, #3e8f95);
+            color: white;
+            overflow-x: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 900px;
+            flex-grow: 1;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 80vh; /* Takes 80% of the viewport height */
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lecture <span id="lectureNumber"></span> PDF</h1>
+        <iframe id="pdfViewer" class="pdf-container"></iframe>
+    </div>
+
+    <script>
+        // Get the selected lecture and chapter number from local storage
+        const lectureNumber = localStorage.getItem('selectedLecture');
+        const chapterNumber = localStorage.getItem('selectedChapter');
+
+        // Display the lecture number in the heading
+        document.getElementById('lectureNumber').textContent = lectureNumber;
+
+        // Set the PDF source path dynamically
+        const pdfPath = `lecture${lectureNumber}.pdf`;
+        document.getElementById('pdfViewer').src = pdfPath;
+    </script>
+
+</body>
+</html>
