@@ -52,6 +52,7 @@
             transition: background-color 0.3s;
             width: 80%;
             max-width: 300px;
+            text-align: center;
         }
 
         .chapter-button:hover {
@@ -70,23 +71,32 @@
         <h1>Mathematics - Chapters</h1>
         <p>Select a chapter to explore:</p>
         <div class="chapter-list">
-            <button class="chapter-button" onclick="saveChapter(1)">Chapter 1: Algebra</button>
-            <button class="chapter-button" onclick="saveChapter(2)">Chapter 2: Geometry</button>
-            <button class="chapter-button" onclick="saveChapter(3)">Chapter 3: Calculus</button>
-            <button class="chapter-button" onclick="saveChapter(4)">Chapter 4: Trigonometry</button>
-            <button class="chapter-button" onclick="saveChapter(5)">Chapter 5: Probability</button>
-            <button class="chapter-button" onclick="saveChapter(6)">Chapter 6: Statistics</button>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="1">
+                <button type="submit" class="chapter-button">Chapter 1: Algebra</button>
+            </form>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="2">
+                <button type="submit" class="chapter-button">Chapter 2: Geometry</button>
+            </form>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="3">
+                <button type="submit" class="chapter-button">Chapter 3: Calculus</button>
+            </form>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="4">
+                <button type="submit" class="chapter-button">Chapter 4: Trigonometry</button>
+            </form>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="5">
+                <button type="submit" class="chapter-button">Chapter 5: Probability</button>
+            </form>
+            <form action="chapter.html" method="get">
+                <input type="hidden" name="chapter" value="6">
+                <button type="submit" class="chapter-button">Chapter 6: Statistics</button>
+            </form>
         </div>
     </div>
-
-    <script>
-        function saveChapter(chapterNumber) {
-            // Save the selected chapter number to local storage
-            localStorage.setItem('selectedChapter', chapterNumber);
-            // Redirect to chapter.html
-            window.location.href = 'chapter.html';
-        }
-    </script>
 
 </body>
 </html>
