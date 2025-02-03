@@ -68,14 +68,23 @@
         <h1>Mathematics - Chapters</h1>
         <p>Select a chapter to explore:</p>
         <div class="chapter-list">
-            <a href="chapter1.html" class="chapter-button">Chapter 1: Algebra</a>
-            <a href="chapter2.html" class="chapter-button">Chapter 2: Geometry</a>
-            <a href="chapter3.html" class="chapter-button">Chapter 3: Calculus</a>
-            <a href="chapter4.html" class="chapter-button">Chapter 4: Trigonometry</a>
-            <a href="chapter5.html" class="chapter-button">Chapter 5: Probability</a>
-            <a href="chapter6.html" class="chapter-button">Chapter 6: Statistics</a>
+            <button class="chapter-button" onclick="saveChapter(1)">Chapter 1: Algebra</button>
+            <button class="chapter-button" onclick="saveChapter(2)">Chapter 2: Geometry</button>
+            <button class="chapter-button" onclick="saveChapter(3)">Chapter 3: Calculus</button>
+            <button class="chapter-button" onclick="saveChapter(4)">Chapter 4: Trigonometry</button>
+            <button class="chapter-button" onclick="saveChapter(5)">Chapter 5: Probability</button>
+            <button class="chapter-button" onclick="saveChapter(6)">Chapter 6: Statistics</button>
         </div>
     </div>
+
+    <script>
+        function saveChapter(chapterNumber) {
+            // Save the selected chapter number to local storage
+            localStorage.setItem('selectedChapter', chapterNumber);
+            // Redirect to chapter.html
+            window.location.href = 'chapter.html';
+        }
+    </script>
 
 </body>
 </html>
