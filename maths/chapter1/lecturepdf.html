@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecture PDF - Gtech Poly</title>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
     <style>
         * {
             margin: 0;
@@ -36,10 +37,15 @@
             margin-bottom: 20px;
         }
 
-        .pdf-container {
+        #pdfViewer {
             width: 100%;
-            height: 80vh; /* Takes 80% of the viewport height */
+            height: 80vh;
             border: none;
+            background: white;
+        }
+
+        canvas {
+            width: 100%;
         }
 
     </style>
@@ -48,20 +54,43 @@
 
     <div class="container">
         <h1>Lecture <span id="lectureNumber"></span> PDF</h1>
-        <iframe id="pdfViewer" class="pdf-container"></iframe>
+        <div id="pdfViewer"></div>
     </div>
 
     <script>
-        // Get the selected lecture and chapter number from local storage
+        // Get the selected lecture number from local storage
         const lectureNumber = localStorage.getItem('selectedLecture');
-        const chapterNumber = localStorage.getItem('selectedChapter');
-
-        // Display the lecture number in the heading
         document.getElementById('lectureNumber').textContent = lectureNumber;
 
-        // Set the PDF source path dynamically
+        // Set the PDF path dynamically
         const pdfPath = `lecture${lectureNumber}.pdf`;
-        document.getElementById('pdfViewer').src = pdfPath;
+
+        // Load and render the PDF using PDF.js
+        const pdfViewer = document.getElementById('pdfViewer');
+
+        const renderPDF = async (url) => {
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+            
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale });
+
+                // Create a canvas element for each page
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                pdfViewer.appendChild(canvas);
+
+                const renderContext = { canvasContext: context, viewport: viewport };
+                await page.render(renderContext).promise;
+            }
+        };
+
+        renderPDF(pdfPath);
     </script>
 
 </body>
