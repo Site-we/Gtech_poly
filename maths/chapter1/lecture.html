@@ -32,9 +32,8 @@
         video {
             width: 80%;
             max-width: 800px;
-            border-radius: 10px;
-            border: 2px solid white;
             background: black;
+            outline: none; /* Removes any focus borders */
         }
 
         .error-message {
@@ -59,6 +58,7 @@
 
         // Define the text file that contains the video URL
         const videoTextFile = `lecture${lectureNumber}.txt`;
+        const videoPlayer = document.getElementById('videoPlayer');
 
         // Function to fetch the video URL from the text file
         async function fetchVideoURL() {
@@ -70,7 +70,7 @@
                 const videoURL = await response.text();
                 
                 // Trim any whitespace/new lines and set the video source
-                document.getElementById('videoPlayer').src = videoURL.trim();
+                videoPlayer.src = videoURL.trim();
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
@@ -78,6 +78,42 @@
 
         // Load the video URL
         fetchVideoURL();
+
+        // Long-press functionality to change video speed
+        let longPressTimer;
+        
+        videoPlayer.addEventListener("mousedown", () => {
+            longPressTimer = setTimeout(() => {
+                videoPlayer.playbackRate = 2.0; // Set speed to 2x
+            }, 500); // Long press duration (500ms)
+        });
+
+        videoPlayer.addEventListener("mouseup", () => {
+            clearTimeout(longPressTimer);
+            videoPlayer.playbackRate = 1.0; // Reset speed to normal
+        });
+
+        videoPlayer.addEventListener("mouseleave", () => {
+            clearTimeout(longPressTimer);
+            videoPlayer.playbackRate = 1.0; // Ensure speed resets if pointer leaves
+        });
+
+        videoPlayer.addEventListener("touchstart", (event) => {
+            event.preventDefault(); // Prevent accidental zooming
+            longPressTimer = setTimeout(() => {
+                videoPlayer.playbackRate = 2.0;
+            }, 500);
+        });
+
+        videoPlayer.addEventListener("touchend", () => {
+            clearTimeout(longPressTimer);
+            videoPlayer.playbackRate = 1.0;
+        });
+
+        videoPlayer.addEventListener("touchcancel", () => {
+            clearTimeout(longPressTimer);
+            videoPlayer.playbackRate = 1.0;
+        });
     </script>
 
 </body>
