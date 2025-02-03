@@ -178,6 +178,15 @@
             lectureButton.classList.add('lecture-button');
             lectureButton.textContent = `Lecture ${lectureNumber}`;
 
+            // Set click event for the lecture button to save the lecture number and redirect
+            lectureButton.addEventListener('click', function() {
+                // Save the lecture number to local storage
+                localStorage.setItem('selectedLecture', lectureNumber);
+
+                // Redirect to the respective lecture page
+                window.location.href = `chapter${chapterNumber}/lecture.html`;
+            });
+
             // Create PDF button for each lecture
             const pdfButton = document.createElement('a');
             pdfButton.classList.add('pdf-button');
