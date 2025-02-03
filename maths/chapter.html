@@ -5,51 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter - Gtech Poly</title>
     <style>
-        /* Same styling as before */
-        body {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background: linear-gradient(to right, #1d557d, #3e8f95);
+            color: white;
         }
+
         .container {
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.6);
             padding: 40px;
-            border-radius: 10px;
             width: 80%;
             max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
+
         h1 {
             font-size: 3rem;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-        p {
-            font-size: 1.5rem;
+
+        .lecture-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-top: 20px;
+        }
+
+        .lecture-button {
+            display: block;
+            background-color: #1d557d;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .lecture-button:hover {
+            background-color: #155370;
+        }
+
+        .lecture-button:active {
+            background-color: #0e3e56;
+        }
+
+        .pdf-button {
+            display: block;
+            background-color: #3e8f95;
+            color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .pdf-button:hover {
+            background-color: #2a7080;
+        }
+
+        .pdf-button:active {
+            background-color: #1d557d;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Chapter Details</h1>
-        <p id="chapter-info">Loading chapter details...</p>
+        <h1>Chapter <span id="chapterNumber"></span></h1>
+        <div class="lecture-list" id="lectureList">
+            <!-- Lecture buttons will be dynamically populated here -->
+        </div>
     </div>
 
     <script>
-        // Get the selected chapter number from localStorage
+        // Get the selected chapter from local storage
         const chapterNumber = localStorage.getItem('selectedChapter');
+        
+        // Display the chapter number in the heading
+        document.getElementById('chapterNumber').textContent = chapterNumber;
 
-        // Display the chapter details
-        const chapterInfo = document.getElementById('chapter-info');
-        if (chapterNumber) {
-            chapterInfo.textContent = `You are viewing Chapter ${chapterNumber}.`;
-        } else {
-            chapterInfo.textContent = 'No chapter selected.';
-        }
+        // Define the lecture PDF links for each chapter (up to 9 lectures)
+        const lecturePDFs = {
+            1: [
+                { pdf: 'maths/chapter1/lecture1.pdf' },
+                { pdf: 'maths/chapter1/lecture2.pdf' },
+                { pdf: 'maths/chapter1/lecture3.pdf' },
+                { pdf: 'maths/chapter1/lecture4.pdf' },
+                { pdf: 'maths/chapter1/lecture5.pdf' },
+                { pdf: 'maths/chapter1/lecture6.pdf' },
+                { pdf: 'maths/chapter1/lecture7.pdf' },
+                { pdf: 'maths/chapter1/lecture8.pdf' },
+                { pdf: 'maths/chapter1/lecture9.pdf' }
+            ],
+            2: [
+                { pdf: 'maths/chapter2/lecture1.pdf' },
+                { pdf: 'maths/chapter2/lecture2.pdf' },
+                { pdf: 'maths/chapter2/lecture3.pdf' },
+                { pdf: 'maths/chapter2/lecture4.pdf' },
+                { pdf: 'maths/chapter2/lecture5.pdf' },
+                { pdf: 'maths/chapter2/lecture6.pdf' },
+                { pdf: 'maths/chapter2/lecture7.pdf' },
+                { pdf: 'maths/chapter2/lecture8.pdf' },
+                { pdf: 'maths/chapter2/lecture9.pdf' }
+            ],
+            // Repeat for other chapters (up to chapter 6 in this example)
+            3: [
+                { pdf: 'maths/chapter3/lecture1.pdf' },
+                { pdf: 'maths/chapter3/lecture2.pdf' },
+                { pdf: 'maths/chapter3/lecture3.pdf' },
+                { pdf: 'maths/chapter3/lecture4.pdf' },
+                { pdf: 'maths/chapter3/lecture5.pdf' },
+                { pdf: 'maths/chapter3/lecture6.pdf' },
+                { pdf: 'maths/chapter3/lecture7.pdf' },
+                { pdf: 'maths/chapter3/lecture8.pdf' },
+                { pdf: 'maths/chapter3/lecture9.pdf' }
+            ],
+            4: [
+                { pdf: 'maths/chapter4/lecture1.pdf' },
+                { pdf: 'maths/chapter4/lecture2.pdf' },
+                { pdf: 'maths/chapter4/lecture3.pdf' },
+                { pdf: 'maths/chapter4/lecture4.pdf' },
+                { pdf: 'maths/chapter4/lecture5.pdf' },
+                { pdf: 'maths/chapter4/lecture6.pdf' },
+                { pdf: 'maths/chapter4/lecture7.pdf' },
+                { pdf: 'maths/chapter4/lecture8.pdf' },
+                { pdf: 'maths/chapter4/lecture9.pdf' }
+            ],
+            5: [
+                { pdf: 'maths/chapter5/lecture1.pdf' },
+                { pdf: 'maths/chapter5/lecture2.pdf' },
+                { pdf: 'maths/chapter5/lecture3.pdf' },
+                { pdf: 'maths/chapter5/lecture4.pdf' },
+                { pdf: 'maths/chapter5/lecture5.pdf' },
+                { pdf: 'maths/chapter5/lecture6.pdf' },
+                { pdf: 'maths/chapter5/lecture7.pdf' },
+                { pdf: 'maths/chapter5/lecture8.pdf' },
+                { pdf: 'maths/chapter5/lecture9.pdf' }
+            ],
+            6: [
+                { pdf: 'maths/chapter6/lecture1.pdf' },
+                { pdf: 'maths/chapter6/lecture2.pdf' },
+                { pdf: 'maths/chapter6/lecture3.pdf' },
+                { pdf: 'maths/chapter6/lecture4.pdf' },
+                { pdf: 'maths/chapter6/lecture5.pdf' },
+                { pdf: 'maths/chapter6/lecture6.pdf' },
+                { pdf: 'maths/chapter6/lecture7.pdf' },
+                { pdf: 'maths/chapter6/lecture8.pdf' },
+                { pdf: 'maths/chapter6/lecture9.pdf' }
+            ]
+        };
+
+        // Get the lecture list for the selected chapter
+        const lectures = lecturePDFs[chapterNumber] || [];
+
+        // Dynamically generate the lecture buttons
+        const lectureListElement = document.getElementById('lectureList');
+        lectures.forEach((lecture, index) => {
+            const lectureNumber = index + 1;
+
+            // Create Lecture button
+            const lectureButton = document.createElement('button');
+            lectureButton.classList.add('lecture-button');
+            lectureButton.textContent = `Lecture ${lectureNumber}`;
+
+            // Create PDF button for each lecture
+            const pdfButton = document.createElement('a');
+            pdfButton.classList.add('pdf-button');
+            pdfButton.textContent = `Open Lecture ${lectureNumber} PDF`;
+            pdfButton.href = lecture.pdf;
+            pdfButton.target = '_blank'; // Open the PDF in a new tab
+
+            // Append both the lecture button and PDF button to the list
+            lectureListElement.appendChild(lectureButton);
+            lectureListElement.appendChild(pdfButton);
+        });
     </script>
 
 </body>
