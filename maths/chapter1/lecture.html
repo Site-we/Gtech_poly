@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecture - Gtech Poly</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         * {
             margin: 0;
@@ -70,7 +71,20 @@
                 const videoURL = await response.text();
                 
                 // Trim any whitespace/new lines and set the video source
-                videoPlayer.src = videoURL.trim();
+                if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(videoURL.trim());
+                    hls.attachMedia(videoPlayer);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                        videoPlayer.play();
+                    });
+                } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                    // Fallback for browsers that support HLS natively (like Safari)
+                    videoPlayer.src = videoURL.trim();
+                    videoPlayer.addEventListener('loadedmetadata', function() {
+                        videoPlayer.play();
+                    });
+                }
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
@@ -78,33 +92,6 @@
 
         // Load the video URL
         fetchVideoURL();
-
-        let longPressTimer;
-
-        // Long-press functionality to change video speed
-        function startLongPress() {
-            longPressTimer = setTimeout(() => {
-                videoPlayer.playbackRate = 2.0; // Set speed to 2x
-            }, 500);
-        }
-
-        function cancelLongPress() {
-            clearTimeout(longPressTimer);
-            videoPlayer.playbackRate = 1.0; // Reset speed to normal
-        }
-
-        // Mouse events
-        videoPlayer.addEventListener("mousedown", startLongPress);
-        videoPlayer.addEventListener("mouseup", cancelLongPress);
-        videoPlayer.addEventListener("mouseleave", cancelLongPress);
-
-        // Touch events (Mobile)
-        videoPlayer.addEventListener("touchstart", startLongPress);
-        videoPlayer.addEventListener("touchend", cancelLongPress);
-        videoPlayer.addEventListener("touchcancel", cancelLongPress);
-
-        // Prevent long-press context menu (right-click) from appearing
-        videoPlayer.addEventListener("contextmenu", (event) => event.preventDefault());
     </script>
 
 </body>
