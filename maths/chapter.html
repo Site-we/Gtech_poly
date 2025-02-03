@@ -88,14 +88,8 @@
     </div>
 
     <script>
-        // Function to get query parameter by name
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        // Get the selected chapter number from query parameters
-        const chapterNumber = getQueryParameter('chapter');
+        // Get the selected chapter number from local storage
+        const chapterNumber = localStorage.getItem('selectedChapter');
         document.getElementById('chapterNumber').textContent = chapterNumber;
 
         const lectureListElement = document.getElementById('lectureList');
@@ -107,7 +101,8 @@
             lectureButton.classList.add('lecture-button');
             lectureButton.textContent = `Lecture ${i}`;
             lectureButton.onclick = function () {
-                window.location.href = `chapter${chapterNumber}/lecture.html?lecture=${i}`;
+                localStorage.setItem('selectedLecture', i);
+                window.location.href = `chapter${chapterNumber}/lecture.html`;
             };
 
             // Create PDF button
@@ -115,7 +110,8 @@
             pdfButton.classList.add('pdf-button');
             pdfButton.textContent = `Lecture ${i} PDF`;
             pdfButton.onclick = function () {
-                window.location.href = `chapter${chapterNumber}/lecturepdf.html?lecture=${i}`;
+                localStorage.setItem('selectedLecture', i);
+                window.location.href = `chapter${chapterNumber}/lecturepdf.html`;
             };
 
             // Append buttons to the list
