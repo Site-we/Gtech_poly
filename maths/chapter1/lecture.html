@@ -74,6 +74,9 @@
                     videoPlayer.currentTime = parseFloat(savedTime);
                 }
 
+                // Request full-screen mode
+                videoPlayer.requestFullscreen();
+
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
