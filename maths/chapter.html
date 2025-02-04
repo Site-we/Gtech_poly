@@ -94,6 +94,19 @@
 
         const lectureListElement = document.getElementById('lectureList');
 
+        // Helper function to check if a file exists
+        function fileExists(url, callback) {
+            fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+                .catch(() => callback(false));
+        }
+
         // Generate Lecture and PDF buttons
         for (let i = 1; i <= 9; i++) {
             // Create Lecture button
@@ -101,8 +114,15 @@
             lectureButton.classList.add('lecture-button');
             lectureButton.textContent = `Lecture ${i}`;
             lectureButton.onclick = function () {
-                localStorage.setItem('selectedLecture', i);
-                window.location.href = `chapter${chapterNumber}/lecture.html`;
+                const lectureUrl = `chapter${chapterNumber}/lecture.html`;
+                fileExists(lectureUrl, (exists) => {
+                    if (exists) {
+                        localStorage.setItem('selectedLecture', i);
+                        window.location.href = lectureUrl;
+                    } else {
+                        alert('Lecture not uploaded yet.');
+                    }
+                });
             };
 
             // Create PDF button
@@ -110,8 +130,15 @@
             pdfButton.classList.add('pdf-button');
             pdfButton.textContent = `Lecture ${i} PDF`;
             pdfButton.onclick = function () {
-                localStorage.setItem('selectedLecture', i);
-                window.location.href = `chapter${chapterNumber}/lecturepdf.html`;
+                const pdfUrl = `chapter${chapterNumber}/lecturepdf.html`;
+                fileExists(pdfUrl, (exists) => {
+                    if (exists) {
+                        localStorage.setItem('selectedLecture', i);
+                        window.location.href = pdfUrl;
+                    } else {
+                        alert('Lecture PDF not uploaded yet.');
+                    }
+                });
             };
 
             // Append buttons to the list
