@@ -95,6 +95,18 @@
 
         // Load the video URL
         fetchVideoURL();
+
+        // Disable context menu popup on long press
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable vibration on long press
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
     </script>
 
 </body>
