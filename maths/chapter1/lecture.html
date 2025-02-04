@@ -101,7 +101,13 @@
             event.preventDefault();
         });
 
-        // Disable vibration on long press
+        // Disable long press detection to prevent vibration and popup
+        document.addEventListener('mousedown', function(event) {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        });
+
         document.addEventListener('touchstart', function(event) {
             if (event.touches.length > 1) {
                 event.preventDefault();
