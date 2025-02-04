@@ -13,7 +13,6 @@
 
         body, html {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
             background: linear-gradient(to right, #1d557d, #3e8f95);
             color: white;
             display: flex;
@@ -22,6 +21,7 @@
             justify-content: center;
             height: 100vh;
             text-align: center;
+            padding: 10px;
         }
 
         h1 {
@@ -29,11 +29,13 @@
             font-size: 2rem;
         }
 
+        /* Responsive Video Container */
         .video-container {
-            width: 100%;
-            max-width: 800px;
             position: relative;
+            width: 90%;  /* Adjust width */
+            max-width: 900px; /* Limit max width */
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: black;
         }
 
         iframe {
@@ -55,7 +57,7 @@
 <body>
 
     <h1>Lecture <span id="lectureNumber"></span></h1>
-    
+
     <div class="video-container">
         <iframe id="dailymotionPlayer" allowfullscreen allow="autoplay"></iframe>
     </div>
@@ -79,7 +81,7 @@
                     throw new Error("Video URL file not found.");
                 }
                 const videoURL = await response.text();
-                
+
                 // Trim whitespace and extract Dailymotion video ID
                 const trimmedURL = videoURL.trim();
                 const videoIDMatch = trimmedURL.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/);
