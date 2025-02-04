@@ -79,7 +79,12 @@
 
                 if (videoIDMatch && videoIDMatch[1]) {
                     const videoID = videoIDMatch[1];
-                    dailymotionPlayer.src = `https://www.dailymotion.com/embed/video/${videoID}?queue-enable=false&endscreen-enable=false`;
+                    dailymotionPlayer.src = `https://www.dailymotion.com/embed/video/${videoID}`;
+                    
+                    // Ensure the video is unmuted by default
+                    dailymotionPlayer.onload = () => {
+                        dailymotionPlayer.contentWindow.postMessage('{"method":"setVolume","value":1}', '*');
+                    };
                 } else {
                     throw new Error("Invalid Dailymotion URL format.");
                 }
