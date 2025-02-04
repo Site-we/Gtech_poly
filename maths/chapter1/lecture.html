@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body, html {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -22,16 +23,19 @@
             height: 100vh;
             text-align: center;
         }
+
         h1 {
             margin-bottom: 20px;
             font-size: 2rem;
         }
+
         video {
             width: 80%;
             max-width: 800px;
             background: black;
             outline: none;
         }
+
         .error-message {
             color: red;
             font-size: 1.2rem;
@@ -67,26 +71,6 @@
                 
                 // Trim any whitespace/new lines and set the video source
                 videoPlayer.src = videoURL.trim();
-
-                // Restore video time if saved
-                const savedTime = localStorage.getItem(`videoTime_${lectureNumber}`);
-                if (savedTime) {
-                    videoPlayer.currentTime = parseFloat(savedTime);
-                }
-
-                // Request full-screen mode when playback starts
-                videoPlayer.addEventListener('play', () => {
-                    if (videoPlayer.requestFullscreen) {
-                        videoPlayer.requestFullscreen();
-                    } else if (videoPlayer.mozRequestFullScreen) { // Firefox
-                        videoPlayer.mozRequestFullScreen();
-                    } else if (videoPlayer.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-                        videoPlayer.webkitRequestFullscreen();
-                    } else if (videoPlayer.msRequestFullscreen) { // IE/Edge
-                        videoPlayer.msRequestFullscreen();
-                    }
-                });
-
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
@@ -94,11 +78,6 @@
 
         // Load the video URL
         fetchVideoURL();
-
-        // Save video playback position before page unloads
-        window.addEventListener("beforeunload", function() {
-            localStorage.setItem(`videoTime_${lectureNumber}`, videoPlayer.currentTime);
-        });
 
         let longPressTimer;
 
@@ -127,6 +106,24 @@
         // Prevent long-press context menu (right-click) from appearing
         videoPlayer.addEventListener("contextmenu", (event) => event.preventDefault());
 
+        // Function to request full screen
+        function requestFullScreen() {
+            var video = document.getElementById('videoPlayer');
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) { // Safari
+                video.webkitRequestFullscreen();
+            } else if (video.mozRequestFullScreen) { // Firefox
+                video.mozRequestFullScreen();
+            } else if (video.msRequestFullscreen) { // IE/Edge
+                video.msRequestFullscreen();
+            }
+        }
+
+        // Add event listener to detect fullscreen click
+        videoPlayer.addEventListener('dblclick', function () {
+            requestFullScreen();
+        });
     </script>
 
 </body>
