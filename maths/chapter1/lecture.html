@@ -74,8 +74,18 @@
                     videoPlayer.currentTime = parseFloat(savedTime);
                 }
 
-                // Request full-screen mode
-                videoPlayer.requestFullscreen();
+                // Request full-screen mode when playback starts
+                videoPlayer.addEventListener('play', () => {
+                    if (videoPlayer.requestFullscreen) {
+                        videoPlayer.requestFullscreen();
+                    } else if (videoPlayer.mozRequestFullScreen) { // Firefox
+                        videoPlayer.mozRequestFullScreen();
+                    } else if (videoPlayer.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                        videoPlayer.webkitRequestFullscreen();
+                    } else if (videoPlayer.msRequestFullscreen) { // IE/Edge
+                        videoPlayer.msRequestFullscreen();
+                    }
+                });
 
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
