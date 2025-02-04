@@ -71,8 +71,12 @@
                 }
                 const videoURL = await response.text();
                 
-                // Trim any whitespace/new lines and set the video source
-                videoPlayer.src = videoURL.trim();
+                // Convert Google Drive share link to direct link
+                const googleDriveLink = videoURL.trim();
+                const directLink = googleDriveLink.replace("https://drive.google.com/file/d/", "https://drive.google.com/uc?id=").replace("/view?usp=sharing", "");
+
+                // Set the video source
+                videoPlayer.src = directLink;
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
