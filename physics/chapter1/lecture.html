@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture - Gtech Poly</title>
+    <title>Lecture Video</title>
     <style>
         * {
             margin: 0;
@@ -13,29 +13,32 @@
 
         body, html {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
             background: linear-gradient(to right, #1d557d, #3e8f95);
             color: white;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            text-align: center;
+            width: 100%;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbars from appearing */
         }
 
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-
-        video {
+        /* Video Container */
+        .video-container {
             width: 100%;
             height: 100%;
-            max-width: 100%;
-            max-height: 100%;
             background: black;
-            outline: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain; /* Ensures the video scales properly without cropping */
         }
 
         .error-message {
@@ -47,20 +50,19 @@
 </head>
 <body>
 
-    <h1>Lecture <span id="lectureNumber"></span></h1>
-    <video id="videoPlayer" controls>
-        Your browser does not support the video tag.
-    </video>
+    <div class="video-container">
+        <iframe id="dailymotionPlayer" allowfullscreen allow="autoplay"></iframe>
+    </div>
+
     <p id="errorMessage" class="error-message"></p>
 
     <script>
         // Get the selected lecture number from local storage
         const lectureNumber = localStorage.getItem('selectedLecture');
-        document.getElementById('lectureNumber').textContent = lectureNumber;
 
         // Define the text file that contains the video URL
         const videoTextFile = `lecture${lectureNumber}.txt`;
-        const videoPlayer = document.getElementById('videoPlayer');
+        const dailymotionPlayer = document.getElementById('dailymotionPlayer');
 
         // Function to fetch the video URL from the text file
         async function fetchVideoURL() {
@@ -70,9 +72,22 @@
                     throw new Error("Video URL file not found.");
                 }
                 const videoURL = await response.text();
-                
-                // Trim any whitespace/new lines and set the video source
-                videoPlayer.src = videoURL.trim();
+
+                // Trim whitespace and extract Dailymotion video ID
+                const trimmedURL = videoURL.trim();
+                const videoIDMatch = trimmedURL.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/);
+
+                if (videoIDMatch && videoIDMatch[1]) {
+                    const videoID = videoIDMatch[1];
+                    dailymotionPlayer.src = `https://www.dailymotion.com/embed/video/${videoID}`;
+                    
+                    // Ensure the video is unmuted by default
+                    dailymotionPlayer.onload = () => {
+                        dailymotionPlayer.contentWindow.postMessage('{"method":"setVolume","value":1}', '*');
+                    };
+                } else {
+                    throw new Error("Invalid Dailymotion URL format.");
+                }
             } catch (error) {
                 document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
             }
@@ -80,33 +95,6 @@
 
         // Load the video URL
         fetchVideoURL();
-
-        let longPressTimer;
-
-        // Long-press functionality to change video speed
-        function startLongPress() {
-            longPressTimer = setTimeout(() => {
-                videoPlayer.playbackRate = 2.0; // Set speed to 2x
-            }, 500);
-        }
-
-        function cancelLongPress() {
-            clearTimeout(longPressTimer);
-            videoPlayer.playbackRate = 1.0; // Reset speed to normal
-        }
-
-        // Mouse events
-        videoPlayer.addEventListener("mousedown", startLongPress);
-        videoPlayer.addEventListener("mouseup", cancelLongPress);
-        videoPlayer.addEventListener("mouseleave", cancelLongPress);
-
-        // Touch events (Mobile)
-        videoPlayer.addEventListener("touchstart", startLongPress);
-        videoPlayer.addEventListener("touchend", cancelLongPress);
-        videoPlayer.addEventListener("touchcancel", cancelLongPress);
-
-        // Prevent long-press context menu (right-click) from appearing
-        videoPlayer.addEventListener("contextmenu", (event) => event.preventDefault());
     </script>
 
 </body>
