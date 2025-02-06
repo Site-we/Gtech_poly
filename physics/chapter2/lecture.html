@@ -69,7 +69,7 @@
             try {
                 const response = await fetch(videoTextFile);
                 if (!response.ok) {
-                    throw new Error("Video URL file not found.");
+                    throw new Error("Video not updated yet.");
                 }
                 const videoURL = await response.text();
 
@@ -89,12 +89,30 @@
                     throw new Error("Invalid Dailymotion URL format.");
                 }
             } catch (error) {
-                document.getElementById('errorMessage').textContent = "Error loading video. Please check the file.";
+                document.getElementById('errorMessage').textContent = error.message;
             }
         }
 
         // Load the video URL
         fetchVideoURL();
+
+        // Disable context menu popup on long press
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable long press detection to prevent vibration and popup
+        document.addEventListener('mousedown', function(event) {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
     </script>
 
 </body>
