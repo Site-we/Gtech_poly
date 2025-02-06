@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1d557d, #3e8f95);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbars from appearing */
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain; /* Ensures the video scales properly without cropping */
+        }
+
+        .error-message {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <iframe id="dailymotionPlayer" allowfullscreen allow="autoplay"></iframe>
+    </div>
+
+    <p id="errorMessage" class="error-message"></p>
+
+    <script>
+        // Get the selected lecture number from local storage
+        const lectureNumber = localStorage.getItem('selectedLecture');
+
+        // Define the text file that contains the video URL
+        const videoTextFile = `lecture${lectureNumber}.txt`;
+        const dailymotionPlayer = document.getElementById('dailymotionPlayer');
+
+        // Function to fetch the video URL from the text file
+        async function fetchVideoURL() {
+            try {
+                const response = await fetch(videoTextFile);
+                if (!response.ok) {
+                    throw new Error("Video not updated yet.");
+                }
+                const videoURL = await response.text();
+
+                // Trim whitespace and extract Dailymotion video ID
+                const trimmedURL = videoURL.trim();
+                const videoIDMatch = trimmedURL.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/);
+
+                if (videoIDMatch && videoIDMatch[1]) {
+                    const videoID = videoIDMatch[1];
+                    dailymotionPlayer.src = `https://www.dailymotion.com/embed/video/${videoID}`;
+                    
+                    // Ensure the video is unmuted by default
+                    dailymotionPlayer.onload = () => {
+                        dailymotionPlayer.contentWindow.postMessage('{"method":"setVolume","value":1}', '*');
+                    };
+                } else {
+                    throw new Error("Invalid Dailymotion URL format.");
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+            }
+        }
+
+        // Load the video URL
+        fetchVideoURL();
+
+        // Disable context menu popup on long press
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable long press detection to prevent vibration and popup
+        document.addEventListener('mousedown', function(event) {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+
+</body>
+</html>
