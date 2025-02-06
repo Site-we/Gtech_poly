@@ -67,7 +67,7 @@
 <body>
 
     <div class="container">
-        <h1>Engeneering mechanics Chapters</h1>
+        <h1>Engeneering Mechanics Chapters</h1>
         <p>Select a chapter to explore:</p>
         <div class="chapter-list">
             <button class="chapter-button" onclick="saveChapter(1)">Chapter 1</button>
@@ -83,8 +83,8 @@
         function saveChapter(chapterNumber) {
             // Save the selected chapter number to local storage
             localStorage.setItem('selectedChapter', chapterNumber);
-            // Redirect to chapter.html
-            window.location.href = 'chapter.html';
+            // Redirect to chapter<chapterNumber>/chapter.html
+            window.location.href = `chapter${chapterNumber}/chapter.html`;
         }
     </script>
 
