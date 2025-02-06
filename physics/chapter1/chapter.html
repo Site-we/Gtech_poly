@@ -102,7 +102,7 @@
             lectureButton.textContent = `Lecture ${i}`;
             lectureButton.onclick = function () {
                 localStorage.setItem('selectedLecture', i);
-                window.location.href = `chapter${chapterNumber}/lecture.html`;
+                window.location.href = `lecture.html`;
             };
 
             // Create PDF button
@@ -111,7 +111,7 @@
             pdfButton.textContent = `Lecture ${i} PDF`;
             pdfButton.onclick = function () {
                 localStorage.setItem('selectedLecture', i);
-                window.location.href = `chapter${chapterNumber}/lecturepdf.html`;
+                window.location.href = `lecturepdf.html`;
             };
 
             // Append buttons to the list
