@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter - Gtech Poly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1d557d, #3e8f95);
+            color: white;
+            overflow-x: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .lecture-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .lecture-button,
+        .pdf-button {
+            background-color: #1d557d;
+            color: white;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .lecture-button:hover {
+            background-color: #155370;
+        }
+
+        .lecture-button:active {
+            background-color: #0e3e56;
+        }
+
+        .pdf-button {
+            background-color: #3e8f95;
+        }
+
+        .pdf-button:hover {
+            background-color: #2a7080;
+        }
+
+        .pdf-button:active {
+            background-color: #1d557d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chapter <span id="chapterNumber"></span></h1>
+        <div class="lecture-list" id="lectureList">
+            <!-- Lecture buttons will be dynamically generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Get the selected chapter number from local storage
+        const chapterNumber = localStorage.getItem('selectedChapter');
+        document.getElementById('chapterNumber').textContent = chapterNumber;
+
+        const lectureListElement = document.getElementById('lectureList');
+
+        // Helper function to check if a file exists
+        function fileExists(url, callback) {
+            fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+                .catch(() => callback(false));
+        }
+
+        // Generate Lecture and PDF buttons
+        for (let i = 1; i <= 3; i++) {
+            // Create Lecture button
+            const lectureButton = document.createElement('button');
+            lectureButton.classList.add('lecture-button');
+            lectureButton.textContent = `Lecture ${i}`;
+            lectureButton.onclick = function () {
+                const lectureUrl = `chapter${chapterNumber}/lecture.html`;
+                fileExists(lectureUrl, (exists) => {
+                    if (exists) {
+                        localStorage.setItem('selectedLecture', i);
+                        window.location.href = lectureUrl;
+                    } else {
+                        alert('Lecture not uploaded yet.');
+                    }
+                });
+            };
+
+            // Create PDF button
+            const pdfButton = document.createElement('button');
+            pdfButton.classList.add('pdf-button');
+            pdfButton.textContent = `Lecture ${i} PDF`;
+            pdfButton.onclick = function () {
+                const pdfUrl = `chapter${chapterNumber}/lecturepdf.html`;
+                fileExists(pdfUrl, (exists) => {
+                    if (exists) {
+                        localStorage.setItem('selectedLecture', i);
+                        window.location.href = pdfUrl;
+                    } else {
+                        alert('Lecture PDF not uploaded yet.');
+                    }
+                });
+            };
+
+            // Append buttons to the list
+            lectureListElement.appendChild(lectureButton);
+            lectureListElement.appendChild(pdfButton);
+        }
+    </script>
+
+</body>
+</html>
