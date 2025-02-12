@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Lecture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        #downloadButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        #downloadButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Download Lecture <span id="lectureNumber"></span></h1>
+        <button id="downloadButton">Download 720p</button>
+    </div>
+
+    <script>
+        // Get the selected lecture number from local storage
+        const lectureNumber = localStorage.getItem('selectedLecture');
+        document.getElementById('lectureNumber').textContent = lectureNumber;
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            fetch(`lecture${lectureNumber}.txt`)
+                .then(response => response.text())
+                .then(videoUrl => {
+                    // Extract 720p video link from Dailymotion
+                    const apiUrl = `https://api.dailymotion.com/video/${videoUrl.trim().split('/').pop()}?fields=stream_h264_hd_url`;
+                    
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.stream_h264_hd_url) {
+                                const a = document.createElement('a');
+                                a.href = data.stream_h264_hd_url;
+                                a.download = `lecture${lectureNumber}.mp4`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                            } else {
+                                alert('720p video not available.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching video URL:', error);
+                            alert('Failed to fetch video URL.');
+                        });
+                })
+                .catch(error => {
+                    console.error('Error fetching lecture link:', error);
+                    alert('Failed to fetch lecture link.');
+                });
+        });
+    </script>
+</body>
+</html>
