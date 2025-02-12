@@ -43,7 +43,8 @@
         }
 
         .lecture-button,
-        .pdf-button {
+        .pdf-button,
+        .download-button {
             background-color: #1d557d;
             color: white;
             padding: 12px 25px;
@@ -57,11 +58,13 @@
             cursor: pointer;
         }
 
-        .lecture-button:hover {
+        .lecture-button:hover,
+        .download-button:hover {
             background-color: #155370;
         }
 
-        .lecture-button:active {
+        .lecture-button:active,
+        .download-button:active {
             background-color: #0e3e56;
         }
 
@@ -94,7 +97,7 @@
 
         const lectureListElement = document.getElementById('lectureList');
 
-        // Generate Lecture and PDF buttons
+        // Generate Lecture, PDF, and Download buttons
         for (let i = 1; i <= 13; i++) {
             // Create Lecture button
             const lectureButton = document.createElement('button');
@@ -114,9 +117,19 @@
                 window.location.href = `lecturepdf.html`;
             };
 
+            // Create Download button
+            const downloadButton = document.createElement('button');
+            downloadButton.classList.add('download-button');
+            downloadButton.textContent = `Download ${i}`;
+            downloadButton.onclick = function () {
+                localStorage.setItem('selectedLecture', i);
+                window.location.href = `download.html`;
+            };
+
             // Append buttons to the list
             lectureListElement.appendChild(lectureButton);
             lectureListElement.appendChild(pdfButton);
+            lectureListElement.appendChild(downloadButton);
         }
     </script>
 
