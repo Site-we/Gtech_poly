@@ -52,39 +52,38 @@
         document.getElementById('lectureNumber').textContent = lectureNumber;
 
         document.getElementById('downloadLectureButton').addEventListener('click', function() {
-            fetch(`lecture${lectureNumber}.txt`)
-                .then(response => response.text())
-                .then(videoUrl => {
-                    const apiUrl = `https://api.dailymotion.com/video/${videoUrl.trim().split('/').pop()}?fields=qualities`;
+            const fileName = window.prompt('Enter the desired file name:', `lecture${lectureNumber}.mp4`);
 
-                    fetch(apiUrl)
-                        .then(response => response.json())
-                        .then(data => {
-                            const qualities = data.qualities;
-                            if (qualities && qualities['720'] && qualities['720'][0].url) {
-                                const downloadUrl = qualities['720'][0].url;
-                                const fileName = window.prompt('Enter the desired file name:', `lecture${lectureNumber}.mp4`);
-                                if (fileName) {
-                                    const a = document.createElement('a');
-                                    a.href = downloadUrl;
-                                    a.download = fileName;
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
+            if (fileName) {
+                localStorage.setItem(`lecture${lectureNumber}FileName`, fileName);
+
+                fetch(`lecture${lectureNumber}.txt`)
+                    .then(response => response.text())
+                    .then(videoUrl => {
+                        const apiUrl = `https://api.dailymotion.com/video/${videoUrl.trim().split('/').pop()}?fields=qualities`;
+
+                        fetch(apiUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                const qualities = data.qualities;
+                                if (qualities && qualities['720'] && qualities['720'][0].url) {
+                                    const downloadUrl = qualities['720'][0].url;
+                                    const link = `https://video-s72r.onrender.com/?videoUrl=${encodeURIComponent(downloadUrl)}`;
+                                    window.open(link, '_blank');
+                                } else {
+                                    alert('720p video not available.');
                                 }
-                            } else {
-                                alert('720p video not available.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching video qualities:', error);
-                            alert('Failed to fetch video qualities.');
-                        });
-                })
-                .catch(error => {
-                    console.error('Error fetching lecture link:', error);
-                    alert('Failed to fetch lecture link.');
-                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching video qualities:', error);
+                                alert('Failed to fetch video qualities.');
+                            });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching lecture link:', error);
+                        alert('Failed to fetch lecture link.');
+                    });
+            }
         });
 
         document.getElementById('downloadPdfButton').addEventListener('click', function() {
