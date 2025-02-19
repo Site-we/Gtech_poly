@@ -63,12 +63,15 @@
                             const qualities = data.qualities;
                             if (qualities && qualities['720'] && qualities['720'][0].url) {
                                 const downloadUrl = qualities['720'][0].url;
-                                const a = document.createElement('a');
-                                a.href = downloadUrl;
-                                a.download = `lecture${lectureNumber}.mp4`;
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
+                                const fileName = window.prompt('Enter the desired file name:', `lecture${lectureNumber}.mp4`);
+                                if (fileName) {
+                                    const a = document.createElement('a');
+                                    a.href = downloadUrl;
+                                    a.download = fileName;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                }
                             } else {
                                 alert('720p video not available.');
                             }
@@ -86,12 +89,15 @@
 
         document.getElementById('downloadPdfButton').addEventListener('click', function() {
             const pdfUrl = `lecture${lectureNumber}.pdf`;
-            const a = document.createElement('a');
-            a.href = pdfUrl;
-            a.download = `lecture${lectureNumber}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            const fileName = window.prompt('Enter the desired file name:', `lecture${lectureNumber}.pdf`);
+            if (fileName) {
+                const a = document.createElement('a');
+                a.href = pdfUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
         });
     </script>
 </body>
