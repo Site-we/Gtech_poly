@@ -57,7 +57,7 @@
             fetch(`lecture${lectureNumber}.txt`)
                 .then(response => response.text())
                 .then(videoUrl => {
-                    const link = `https://video-s72r.onrender.com/?videoUrl=${videoUrl.trim()}`;
+                    const link = `https://video-s72r.onrender.com/?url=${videoUrl.trim()}`;
                     window.open(link, '_blank');
                 })
                 .catch(error => {
