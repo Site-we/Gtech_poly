@@ -21,7 +21,7 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-        #downloadButton {
+        .downloadButton {
             background-color: #4CAF50;
             color: white;
             padding: 15px 32px;
@@ -34,7 +34,7 @@
             border: none;
             border-radius: 5px;
         }
-        #downloadButton:hover {
+        .downloadButton:hover {
             background-color: #45a049;
         }
     </style>
@@ -42,7 +42,8 @@
 <body>
     <div id="container">
         <h1>Download Lecture <span id="lectureNumber"></span></h1>
-        <button id="downloadButton">Download 720p</button>
+        <button id="downloadLectureButton" class="downloadButton">Download Lecture 720p</button>
+        <button id="downloadPdfButton" class="downloadButton">Download PDF</button>
     </div>
 
     <script>
@@ -50,7 +51,7 @@
         const lectureNumber = localStorage.getItem('selectedLecture');
         document.getElementById('lectureNumber').textContent = lectureNumber;
 
-        document.getElementById('downloadButton').addEventListener('click', function() {
+        document.getElementById('downloadLectureButton').addEventListener('click', function() {
             fetch(`lecture${lectureNumber}.txt`)
                 .then(response => response.text())
                 .then(videoUrl => {
@@ -81,6 +82,16 @@
                     console.error('Error fetching lecture link:', error);
                     alert('Failed to fetch lecture link.');
                 });
+        });
+
+        document.getElementById('downloadPdfButton').addEventListener('click', function() {
+            const pdfUrl = `lecture${lectureNumber}.pdf`;
+            const a = document.createElement('a');
+            a.href = pdfUrl;
+            a.download = `lecture${lectureNumber}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
     </script>
 </body>
