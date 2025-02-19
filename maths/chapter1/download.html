@@ -60,24 +60,8 @@
                 fetch(`lecture${lectureNumber}.txt`)
                     .then(response => response.text())
                     .then(videoUrl => {
-                        const apiUrl = `https://api.dailymotion.com/video/${videoUrl.trim().split('/').pop()}?fields=qualities`;
-
-                        fetch(apiUrl)
-                            .then(response => response.json())
-                            .then(data => {
-                                const qualities = data.qualities;
-                                if (qualities && qualities['720'] && qualities['720'][0].url) {
-                                    const downloadUrl = qualities['720'][0].url;
-                                    const link = `https://video-s72r.onrender.com/?videoUrl=${encodeURIComponent(downloadUrl)}`;
-                                    window.open(link, '_blank');
-                                } else {
-                                    alert('720p video not available.');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching video qualities:', error);
-                                alert('Failed to fetch video qualities.');
-                            });
+                        const link = `https://video-s72r.onrender.com/?videoUrl=${encodeURIComponent(videoUrl.trim())}`;
+                        window.open(link, '_blank');
                     })
                     .catch(error => {
                         console.error('Error fetching lecture link:', error);
