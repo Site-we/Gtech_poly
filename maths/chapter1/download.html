@@ -54,10 +54,10 @@
         <button id="downloadPdfButton" class="downloadButton">Download PDF</button>
     </div>
     <script>
-    // Get the selected lecture number from local storage
+    // Get the selected lecture number, chapter number, and subject name from local storage
     const lectureNumber = localStorage.getItem('selectedLecture');
-    const subjectName = 'Maths'; // You can update this to fetch dynamically if needed
-    const chapterNumber = 1; // You can update this to fetch dynamically if needed
+    const subjectName = localStorage.getItem('selectedSubject'); // Fetch subject name from local storage
+    const chapterNumber = localStorage.getItem('selectedChapter'); // Fetch chapter number from local storage
 
     document.getElementById('lectureNumber').textContent = lectureNumber;
 
