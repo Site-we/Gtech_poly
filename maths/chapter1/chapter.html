@@ -20,6 +20,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .container {
             text-align: center;
             padding: 10px;
@@ -28,22 +29,26 @@
             margin-top: 10px;
             flex-grow: 1;
         }
+
         h1 {
             font-size: 2rem;
             margin-bottom: 15px;
         }
+
         .lecture-list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 5px;
             margin-top: 10px;
         }
+
         .lecture-column {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 5px;
         }
+
         .lecture-button,
         .pdf-button,
         .download-button {
@@ -63,26 +68,32 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .lecture-button:hover,
         .download-button:hover {
             background-color: #155370;
         }
+
         .lecture-button:active,
         .download-button:active {
             background-color: #0e3e56;
         }
+
         .pdf-button {
             background-color: #3e8f95;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .pdf-button:hover {
             background-color: #2a7080;
         }
+
         .pdf-button:active {
             background-color: #1d557d;
         }
+
         @media (max-width: 600px) {
             .container {
                 padding: 5px;
@@ -127,8 +138,6 @@
             const filePath = basePath + `lecture${a}.txt`;
             try {
                 const response = await fetch(filePath);
-                if (!response.ok) break;
-
                 const text = await response.text();
                 if (text.trim() === "") break;
 
