@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gtech-Poly</title>
+    <title id="page-title"></title>
     <style>
         * {
             margin: 0;
@@ -84,14 +84,10 @@
         const selectedSubject = localStorage.getItem('selectedSubject');
         
         // Display the subject name in the h1 tag
-        if (selectedSubject) {
-            document.getElementById('subject-title').innerText = `${selectedSubject} Chapters`;
-        } else {
-            document.getElementById('subject-title').innerText = "Subject not selected";
-        }
+        document.getElementById('subject-title').innerText = `${selectedSubject} Chapters`;
         
         // Set the title dynamically
-        document.title = "Gtech-Poly";
+        document.getElementById('page-title').innerText = `${selectedSubject} Gtech-Poly`;
         
         function saveChapter(chapterNumber) {
             // Save the selected chapter number to local storage
