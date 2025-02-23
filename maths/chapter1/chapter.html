@@ -130,14 +130,15 @@
     const pdfColumn = document.getElementById('pdfColumn');
     const downloadColumn = document.getElementById('downloadColumn');
 
-    const basePath = "maths/chapter1/";
-
     async function checkFiles() {
         let a = 1;
         while (true) {
-            const filePath = basePath + `lecture${a}.txt`;
+            const filePath = `lecture${a}.txt`;
             try {
                 const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
                 const text = await response.text();
                 if (!text.includes('dailymotion')) {
                     break;
