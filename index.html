@@ -87,6 +87,22 @@
             }
         }
     </style>
+    <script>
+        function saveSubjectAndNavigate(event) {
+            event.preventDefault();
+            const subjectName = event.target.textContent;
+            const subjectHref = event.target.getAttribute('href');
+            localStorage.setItem('selectedSubject', subjectName);
+            window.location.href = subjectHref;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.folder-links a');
+            links.forEach(link => {
+                link.addEventListener('click', saveSubjectAndNavigate);
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
