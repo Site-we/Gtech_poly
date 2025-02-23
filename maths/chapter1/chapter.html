@@ -130,23 +130,18 @@
     const pdfColumn = document.getElementById('pdfColumn');
     const downloadColumn = document.getElementById('downloadColumn');
 
-    const lectureFiles = [
-        "lecture1.txt", "lecture2.txt", "lecture3.txt", "lecture4.txt", "lecture5.txt",
-        "lecture6.txt", "lecture7.txt", "lecture8.txt", "lecture9.txt", "lecture10.txt",
-        "lecture11.txt", "lecture12.txt", "lecture13.txt", "lecture14.txt, lecture15.txt
-    ];
-
     const basePath = "maths/chapter1/";
 
     async function checkFiles() {
-        for (let i = 0; i < lectureFiles.length; i++) {
-            const filePath = basePath + lectureFiles[i];
+        let a = 1;
+        while (true) {
+            const filePath = basePath + `lecture${a}.txt`;
             try {
                 const response = await fetch(filePath);
                 const text = await response.text();
                 if (text.trim() === "") break;
 
-                const lectureNumber = i + 1;
+                const lectureNumber = a;
 
                 const lectureButton = document.createElement('button');
                 lectureButton.classList.add('lecture-button');
@@ -174,6 +169,8 @@
                     window.location.href = `download.html`;
                 };
                 downloadColumn.appendChild(downloadButton);
+
+                a++;
             } catch (error) {
                 console.error('Error fetching file:', filePath, error);
                 break;
