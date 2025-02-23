@@ -76,7 +76,7 @@
 
     document.getElementById('downloadPdfButton').addEventListener('click', function() {
         const pdfUrl = `lecture${lectureNumber}.pdf`;
-        const fileName = `${subjectName}+chapter${chapterNumber}+lecture${lectureNumber}.pdf`;
+        const fileName = `${subjectName} chapter${chapterNumber} lecture${lectureNumber}.pdf`;
         const a = document.createElement('a');
         a.href = pdfUrl;
         a.download = fileName;
