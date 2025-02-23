@@ -139,7 +139,9 @@
             try {
                 const response = await fetch(filePath);
                 const text = await response.text();
-                if (text.trim() === "") break;
+                if (!text.includes('dailymotion')) {
+                    break;
+                }
 
                 const lectureNumber = a;
 
@@ -176,6 +178,8 @@
                 break;
             }
         }
+
+        document.getElementById('chapterNumber').textContent = a - 1;
     }
 
     checkFiles();
