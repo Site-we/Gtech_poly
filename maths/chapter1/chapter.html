@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,110 +9,111 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }body, html {
-        font-family: Arial, sans-serif;
-        font-size: 1.2rem;
-        background: linear-gradient(to right, #1d557d, #3e8f95);
-        color: white;
-        overflow-x: hidden;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+        }
+        body, html {
+            font-family: Arial, sans-serif;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, #1d557d, #3e8f95);
+            color: white;
+            overflow-x: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .container {
-        text-align: center;
-        padding: 10px;
-        width: 100%;
-        max-width: 1000px;
-        margin-top: 10px;
-        flex-grow: 1;
-    }
-
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 15px;
-    }
-
-    .lecture-list {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        margin-top: 10px;
-    }
-
-    .lecture-column {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .lecture-button,
-    .pdf-button,
-    .download-button {
-        background-color: #1d557d;
-        color: white;
-        padding: 8px 2px;
-        border-radius: 3px;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        max-width: 150px;
-        height: 45px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .lecture-button:hover,
-    .download-button:hover {
-        background-color: #155370;
-    }
-
-    .lecture-button:active,
-    .download-button:active {
-        background-color: #0e3e56;
-    }
-
-    .pdf-button {
-        background-color: #3e8f95;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .pdf-button:hover {
-        background-color: #2a7080;
-    }
-
-    .pdf-button:active {
-        background-color: #1d557d;
-    }
-
-    @media (max-width: 600px) {
         .container {
-            padding: 5px;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 10px;
+            flex-grow: 1;
         }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
         .lecture-list {
-            gap: 3px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 10px;
         }
+
+        .lecture-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
         .lecture-button,
         .pdf-button,
         .download-button {
-            padding: 6px 1px;
-            font-size: 0.9rem;
-            max-width: 120px;
-            height: 40px;
+            background-color: #1d557d;
+            color: white;
+            padding: 8px 2px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 150px;
+            height: 45px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-    }
-</style>
 
+        .lecture-button:hover,
+        .download-button:hover {
+            background-color: #155370;
+        }
+
+        .lecture-button:active,
+        .download-button:active {
+            background-color: #0e3e56;
+        }
+
+        .pdf-button {
+            background-color: #3e8f95;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pdf-button:hover {
+            background-color: #2a7080;
+        }
+
+        .pdf-button:active {
+            background-color: #1d557d;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 5px;
+            }
+            .lecture-list {
+                gap: 3px;
+            }
+            .lecture-button,
+            .pdf-button,
+            .download-button {
+                padding: 6px 1px;
+                font-size: 0.9rem;
+                max-width: 120px;
+                height: 40px;
+            }
+        }
+    </style>
 </head>
-<body><div class="container">
+<body>
+<div class="container">
     <h1>Chapter <span id="chapterNumber"></span></h1>
     <div class="lecture-list">
         <div class="lecture-column" id="lectureColumn"></div>
@@ -128,35 +130,58 @@
     const pdfColumn = document.getElementById('pdfColumn');
     const downloadColumn = document.getElementById('downloadColumn');
 
-    for (let i = 1; i <= 13; i++) {
-        const lectureButton = document.createElement('button');
-        lectureButton.classList.add('lecture-button');
-        lectureButton.textContent = `Lecture ${i}`;
-        lectureButton.onclick = function () {
-            localStorage.setItem('selectedLecture', i);
-            window.location.href = `lecture.html`;
-        };
-        lectureColumn.appendChild(lectureButton);
+    const lectureFiles = [
+        "lecture1.txt", "lecture2.txt", "lecture3.txt", "lecture4.txt", "lecture5.txt",
+        "lecture6.txt", "lecture7.txt", "lecture8.txt", "lecture9.txt", "lecture10.txt",
+        "lecture11.txt", "lecture12.txt", "lecture13.txt", "lecture14.txt, lecture15.txt
+    ];
 
-        const pdfButton = document.createElement('button');
-        pdfButton.classList.add('pdf-button');
-        pdfButton.textContent = `Lecture ${i} PDF`;
-        pdfButton.onclick = function () {
-            localStorage.setItem('selectedLecture', i);
-            window.location.href = `lecturepdf.html`;
-        };
-        pdfColumn.appendChild(pdfButton);
+    const basePath = "maths/chapter1/";
 
-        const downloadButton = document.createElement('button');
-        downloadButton.classList.add('download-button');
-        downloadButton.textContent = `Download ${i}`;
-        downloadButton.onclick = function () {
-            localStorage.setItem('selectedLecture', i);
-            window.location.href = `download.html`;
-        };
-        downloadColumn.appendChild(downloadButton);
+    async function checkFiles() {
+        for (let i = 0; i < lectureFiles.length; i++) {
+            const filePath = basePath + lectureFiles[i];
+            try {
+                const response = await fetch(filePath);
+                const text = await response.text();
+                if (text.trim() === "") break;
+
+                const lectureNumber = i + 1;
+
+                const lectureButton = document.createElement('button');
+                lectureButton.classList.add('lecture-button');
+                lectureButton.textContent = `Lecture ${lectureNumber}`;
+                lectureButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `lecture.html`;
+                };
+                lectureColumn.appendChild(lectureButton);
+
+                const pdfButton = document.createElement('button');
+                pdfButton.classList.add('pdf-button');
+                pdfButton.textContent = `Lecture ${lectureNumber} PDF`;
+                pdfButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `lecturepdf.html`;
+                };
+                pdfColumn.appendChild(pdfButton);
+
+                const downloadButton = document.createElement('button');
+                downloadButton.classList.add('download-button');
+                downloadButton.textContent = `Download ${lectureNumber}`;
+                downloadButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `download.html`;
+                };
+                downloadColumn.appendChild(downloadButton);
+            } catch (error) {
+                console.error('Error fetching file:', filePath, error);
+                break;
+            }
+        }
     }
-</script>
 
+    checkFiles();
+</script>
 </body>
 </html>
