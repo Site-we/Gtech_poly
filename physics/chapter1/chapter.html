@@ -10,9 +10,9 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body, html {
             font-family: Arial, sans-serif;
+            font-size: 1.2rem;
             background: linear-gradient(to right, #1d557d, #3e8f95);
             color: white;
             overflow-x: hidden;
@@ -23,50 +23,67 @@
 
         .container {
             text-align: center;
-            padding: 20px;
+            padding: 10px;
             width: 100%;
             max-width: 1000px;
-            margin-top: 20px;
+            margin-top: 10px;
             flex-grow: 1;
         }
 
         h1 {
             font-size: 2rem;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .lecture-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .lecture-column {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
         }
 
         .lecture-button,
-        .pdf-button {
+        .pdf-button,
+        .download-button {
             background-color: #1d557d;
             color: white;
-            padding: 12px 25px;
-            margin: 8px;
-            border-radius: 5px;
+            padding: 8px 2px;
+            border-radius: 3px;
             text-decoration: none;
             font-size: 1rem;
             transition: background-color 0.3s;
-            display: inline-block;
             border: none;
             cursor: pointer;
+            width: 100%;
+            max-width: 150px;
+            height: 45px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .lecture-button:hover {
+        .lecture-button:hover,
+        .download-button:hover {
             background-color: #155370;
         }
 
-        .lecture-button:active {
+        .lecture-button:active,
+        .download-button:active {
             background-color: #0e3e56;
         }
 
         .pdf-button {
             background-color: #3e8f95;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .pdf-button:hover {
@@ -76,49 +93,95 @@
         .pdf-button:active {
             background-color: #1d557d;
         }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 5px;
+            }
+            .lecture-list {
+                gap: 3px;
+            }
+            .lecture-button,
+            .pdf-button,
+            .download-button {
+                padding: 6px 1px;
+                font-size: 0.9rem;
+                max-width: 120px;
+                height: 40px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Chapter <span id="chapterNumber"></span></h1>
-        <div class="lecture-list" id="lectureList">
-            <!-- Lecture buttons will be dynamically generated here -->
-        </div>
+<div class="container">
+    <h1>Chapter <span id="chapterNumber"></span></h1>
+    <div class="lecture-list">
+        <div class="lecture-column" id="lectureColumn"></div>
+        <div class="lecture-column" id="pdfColumn"></div>
+        <div class="lecture-column" id="downloadColumn"></div>
     </div>
+</div>
 
-    <script>
-        // Get the selected chapter number from local storage
-        const chapterNumber = localStorage.getItem('selectedChapter');
-        document.getElementById('chapterNumber').textContent = chapterNumber;
+<script>
+    const chapterNumber = localStorage.getItem('selectedChapter');
+    document.getElementById('chapterNumber').textContent = chapterNumber;
 
-        const lectureListElement = document.getElementById('lectureList');
+    const lectureColumn = document.getElementById('lectureColumn');
+    const pdfColumn = document.getElementById('pdfColumn');
+    const downloadColumn = document.getElementById('downloadColumn');
 
-        // Generate Lecture and PDF buttons
-        for (let i = 1; i <= 9; i++) {
-            // Create Lecture button
-            const lectureButton = document.createElement('button');
-            lectureButton.classList.add('lecture-button');
-            lectureButton.textContent = `Lecture ${i}`;
-            lectureButton.onclick = function () {
-                localStorage.setItem('selectedLecture', i);
-                window.location.href = `lecture.html`;
-            };
+    async function checkFiles() {
+        let a = 1;
+        while (true) {
+            const filePath = `lecture${a}.txt`;
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
+                const text = await response.text();
+                if (!text.includes('dailymotion')) {
+                    break;
+                }
 
-            // Create PDF button
-            const pdfButton = document.createElement('button');
-            pdfButton.classList.add('pdf-button');
-            pdfButton.textContent = `Lecture ${i} PDF`;
-            pdfButton.onclick = function () {
-                localStorage.setItem('selectedLecture', i);
-                window.location.href = `lecturepdf.html`;
-            };
+                const lectureNumber = a;
 
-            // Append buttons to the list
-            lectureListElement.appendChild(lectureButton);
-            lectureListElement.appendChild(pdfButton);
+                const lectureButton = document.createElement('button');
+                lectureButton.classList.add('lecture-button');
+                lectureButton.textContent = `Lecture ${lectureNumber}`;
+                lectureButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `lecture.html`;
+                };
+                lectureColumn.appendChild(lectureButton);
+
+                const pdfButton = document.createElement('button');
+                pdfButton.classList.add('pdf-button');
+                pdfButton.textContent = `Lecture ${lectureNumber} PDF`;
+                pdfButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `lecturepdf.html`;
+                };
+                pdfColumn.appendChild(pdfButton);
+
+                const downloadButton = document.createElement('button');
+                downloadButton.classList.add('download-button');
+                downloadButton.textContent = `Download ${lectureNumber}`;
+                downloadButton.onclick = function () {
+                    localStorage.setItem('selectedLecture', lectureNumber);
+                    window.location.href = `download.html`;
+                };
+                downloadColumn.appendChild(downloadButton);
+
+                a++;
+            } catch (error) {
+                console.error('Error fetching file:', filePath, error);
+                break;
+            }
         }
-    </script>
+    }
 
+    checkFiles();
+</script>
 </body>
 </html>
