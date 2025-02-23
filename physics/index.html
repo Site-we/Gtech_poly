@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applied Physics II - Gtech Poly</title>
+    <title id="dynamic-title"></title>
     <style>
         * {
             margin: 0;
@@ -81,9 +81,11 @@
 
     <script>
         // Get the subject name from local storage
-        const selectedSubject = localStorage.getItem('selectedsubject') || 'Applied Physics II';
+        const selectedSubject = localStorage.getItem('selectedsubject');
         // Display the subject name in the h1 tag
         document.getElementById('subject-title').innerText = `${selectedSubject} Chapters`;
+        // Set the title dynamically
+        document.getElementById('dynamic-title').innerText = `${selectedSubject} - Gtech Poly`;
 
         function saveChapter(chapterNumber) {
             // Save the selected chapter number to local storage
