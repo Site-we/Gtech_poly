@@ -53,37 +53,60 @@
         <button id="downloadLectureButton" class="downloadButton">Download Lecture</button>
         <button id="downloadPdfButton" class="downloadButton">Download PDF</button>
     </div>
+
     <script>
-    // Get the selected lecture number, chapter number, and subject name from local storage
-    const lectureNumber = localStorage.getItem('selectedLecture');
-    const subjectName = localStorage.getItem('selectedSubject'); // Fetch subject name from local storage
-    const chapterNumber = localStorage.getItem('selectedChapter'); // Fetch chapter number from local storage
+        // Fetch stored values from local storage with fallback defaults
+        const lectureNumber = localStorage.getItem('selectedLecture') || '1';
+        const subjectName = localStorage.getItem('selectedSubject') || 'Unknown Subject';
+        const chapterNumber = localStorage.getItem('selectedChapter') || '1';
 
-    document.getElementById('lectureNumber').textContent = lectureNumber;
+        // Update lecture number display
+        document.getElementById('lectureNumber').textContent = lectureNumber;
 
-    document.getElementById('downloadLectureButton').addEventListener('click', function() {
-        fetch(`lecture${lectureNumber}.txt`)
-            .then(response => response.text())
-            .then(videoUrl => {
-                const link = `https://video-s72r.onrender.com/?url=${videoUrl.trim()}`;
-                window.open(link, '_blank');
-            })
-            .catch(error => {
-                console.error('Error fetching lecture link:', error);
-                alert('Failed to fetch lecture link.');
-            });
-    });
+        // Function to fetch and play the lecture video
+        document.getElementById('downloadLectureButton').addEventListener('click', function() {
+            fetch(`lecture${lectureNumber}.txt`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(videoUrl => {
+                    const link = `https://video-s72r.onrender.com/?url=${videoUrl.trim()}`;
+                    window.open(link, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error fetching lecture link:', error);
+                    alert('Failed to fetch lecture link. Please try again.');
+                });
+        });
 
-    document.getElementById('downloadPdfButton').addEventListener('click', function() {
-        const pdfUrl = `lecture${lectureNumber}.pdf`;
-        const fileName = `${subjectName} chapter${chapterNumber} lecture${lectureNumber}.pdf`;
-        const a = document.createElement('a');
-        a.href = pdfUrl;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
+        // Function to download PDF with custom filename
+        document.getElementById('downloadPdfButton').addEventListener('click', function() {
+            const pdfUrl = `lecture${lectureNumber}.pdf`;
+            const fileName = `${subjectName} chapter${chapterNumber} lecture${lectureNumber}.pdf`;
+
+            fetch(pdfUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`File not found: ${pdfUrl}`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => {
+                    console.error('Error downloading PDF:', error);
+                    alert('PDF not found or unavailable.');
+                });
+        });
     </script>
 </body>
 </html>
