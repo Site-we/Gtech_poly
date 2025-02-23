@@ -67,7 +67,7 @@
 <body>
 
     <div class="container">
-        <h1>Applied Physics II Chapters</h1>
+        <h1 id="subject-title"></h1>
         <p>Select a chapter to explore:</p>
         <div class="chapter-list">
             <button class="chapter-button" onclick="saveChapter(1)">Chapter 1</button>
@@ -80,6 +80,11 @@
     </div>
 
     <script>
+        // Get the subject name from local storage
+        const selectedSubject = localStorage.getItem('selectedsubject') || 'Applied Physics II';
+        // Display the subject name in the h1 tag
+        document.getElementById('subject-title').innerText = `${selectedSubject} Chapters`;
+
         function saveChapter(chapterNumber) {
             // Save the selected chapter number to local storage
             localStorage.setItem('selectedChapter', chapterNumber);
