@@ -99,9 +99,11 @@
         async function checkAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get("user");
+            const errorMessage = document.getElementById("error-message");
 
             if (!query) {
-                document.body.innerHTML = "<h1 class='error-message'>Access Denied: No query provided.</h1>";
+                errorMessage.textContent = "Access Denied: No query provided.";
+                errorMessage.style.display = "block";
                 return;
             }
 
@@ -114,7 +116,8 @@
 
                 // Check if the query exists
                 if (!users.includes(query)) {
-                    document.body.innerHTML = "<h1 class='error-message'>Access Denied: User not found.</h1>";
+                    errorMessage.textContent = "Access Denied: User not found.";
+                    errorMessage.style.display = "block";
                     return;
                 }
 
@@ -122,7 +125,8 @@
                 document.getElementById("content").style.display = "block";
 
             } catch (error) {
-                document.body.innerHTML = "<h1 class='error-message'>Error loading users.json</h1>";
+                errorMessage.textContent = "Error loading users.json";
+                errorMessage.style.display = "block";
             }
         }
 
@@ -157,5 +161,6 @@
             <a href="Introduction to IT Systems/index.html">Introduction to IT Systems</a>
         </div>
     </div>
+    <div id="error-message" class="error-message"></div>
 </body>
 </html>
