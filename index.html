@@ -66,6 +66,14 @@
             transform: translateY(-3px);
         }
 
+        /* Error Message */
+        .error-message {
+            text-align: center;
+            color: red;
+            font-size: 1.2rem;
+            display: none;
+        }
+
         /* Fade-in Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
@@ -88,6 +96,36 @@
         }
     </style>
     <script>
+        async function checkAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get("user");
+
+            if (!query) {
+                document.body.innerHTML = "<h1 class='error-message'>Access Denied: No query provided.</h1>";
+                return;
+            }
+
+            try {
+                // Fetch users.json
+                const response = await fetch("users.json"); // Ensure this file is in the same directory
+                if (!response.ok) throw new Error("Failed to load users.json");
+
+                const users = await response.json();
+
+                // Check if the query exists
+                if (!users.includes(query)) {
+                    document.body.innerHTML = "<h1 class='error-message'>Access Denied: User not found.</h1>";
+                    return;
+                }
+
+                // If valid, show the main content
+                document.getElementById("content").style.display = "block";
+
+            } catch (error) {
+                document.body.innerHTML = "<h1 class='error-message'>Error loading users.json</h1>";
+            }
+        }
+
         function saveSubjectAndNavigate(event) {
             event.preventDefault();
             const subjectName = event.target.textContent;
@@ -96,7 +134,9 @@
             window.location.href = subjectHref;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAccess();
+
             const links = document.querySelectorAll('.folder-links a');
             links.forEach(link => {
                 link.addEventListener('click', saveSubjectAndNavigate);
@@ -105,13 +145,13 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div id="content" class="container" style="display: none;">
         <h1>Welcome to Gtech Poly</h1>
         <p>Select a Subject to Explore:</p>
         <div class="folder-links">
             <a href="maths/index.html">Mathematics II</a>
             <a href="physics/index.html">Applied Physics II</a>
-            <a href="engeneering mechanics/index.html">Engineering Mechanics</a>
+            <a href="engineering mechanics/index.html">Engineering Mechanics</a>
             <a href="Environmental Sciences/index.html">Environmental Sciences</a>
             <a href="Fundamental of Electrical and Electronics/index.html">Fundamental of Electrical and Electronics</a>
             <a href="Introduction to IT Systems/index.html">Introduction to IT Systems</a>
