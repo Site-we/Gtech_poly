@@ -71,7 +71,25 @@
             text-align: center;
             color: red;
             font-size: 1.2rem;
-            display: none;
+        }
+
+        .logout-button {
+            display: block;
+            background: #e74c3c;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-button:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
         }
 
         /* Fade-in Animation */
@@ -100,10 +118,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get("user");
             const errorMessage = document.getElementById("error-message");
+            const logoutButton = document.getElementById("logout-button");
 
             if (!query) {
                 errorMessage.textContent = "Access Denied: No User";
                 errorMessage.style.display = "block";
+                logoutButton.style.display = "block";
                 return;
             }
 
@@ -118,6 +138,7 @@
                 if (!users.includes(query)) {
                     errorMessage.textContent = "Access Denied: User not found.";
                     errorMessage.style.display = "block";
+                    logoutButton.style.display = "block";
                     return;
                 }
 
@@ -127,6 +148,7 @@
             } catch (error) {
                 errorMessage.textContent = "Error loading users";
                 errorMessage.style.display = "block";
+                logoutButton.style.display = "block";
             }
         }
 
@@ -162,5 +184,6 @@
         </div>
     </div>
     <div id="error-message" class="error-message"></div>
+    <a id="logout-button" class="logout-button" href="logout.html" style="display: none;">Logout</a>
 </body>
 </html>
