@@ -14,6 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Align items vertically */
             height: 100vh;
         }
 
@@ -26,6 +27,7 @@
             border-radius: 12px;
             max-width: 500px;
             animation: fadeIn 1s ease-in-out;
+            margin-bottom: 20px; /* Add margin for spacing */
         }
 
         /* Heading */
@@ -65,33 +67,35 @@
             background: #155370;
             transform: translateY(-3px);
         }
-        /* Error Message */
-.error-message {
-    text-align: center;
-    color: red;
-    font-size: 1.2rem;
-    margin-bottom: 10px; /* Add margin to create space below the error message */
-    display: block; /* Ensure it's displayed as a block element */
-}
 
-/* Logout Button */
-.logout-button {
-    display: block;
-    background: #e74c3c;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 500;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    margin-top: 10px; /* Add margin to create space above the button */
-}
-.logout-button:hover {
-    background: #c0392b;
-    transform: translateY(-3px);
-}
+        /* Error Message */
+        .error-message {
+            text-align: center;
+            color: red;
+            font-size: 1.2rem;
+            margin-bottom: 10px; /* Add margin to create space below the error message */
+            display: block; /* Ensure it's displayed as a block element */
+            margin-bottom: 20px; /* Add margin for spacing */
+        }
+
+        /* Logout Button */
+        .logout-button {
+            display: block;
+            background: #e74c3c;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 10px; /* Add margin to create space above the button */
+        }
+        .logout-button:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+        }
 
         /* Fade-in Animation */
         @keyframes fadeIn {
@@ -172,6 +176,7 @@
     </script>
 </head>
 <body>
+    <div id="error-message" class="error-message"></div> <!-- Move error message above main content -->
     <div id="content" class="container" style="display: none;">
         <h1>Welcome to Gtech Poly</h1>
         <p>Select a Subject to Explore:</p>
@@ -184,7 +189,6 @@
             <a href="Introduction to IT Systems/index.html">Introduction to IT Systems</a>
         </div>
     </div>
-    <div id="error-message" class="error-message"></div>
     <a id="logout-button" class="logout-button" href="logout.html" style="display: none;">Logout</a>
 </body>
 </html>
