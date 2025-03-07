@@ -65,32 +65,33 @@
             background: #155370;
             transform: translateY(-3px);
         }
-
         /* Error Message */
-        .error-message {
-            text-align: center;
-            color: red;
-            font-size: 1.2rem;
-            margin-bottom: 10px; /* Add margin to create space below the error message */
-        }
+.error-message {
+    text-align: center;
+    color: red;
+    font-size: 1.2rem;
+    margin-bottom: 10px; /* Add margin to create space below the error message */
+    display: block; /* Ensure it's displayed as a block element */
+}
 
-        .logout-button {
-            display: block;
-            background: #e74c3c;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 500;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .logout-button:hover {
-            background: #c0392b;
-            transform: translateY(-3px);
-        }
+/* Logout Button */
+.logout-button {
+    display: block;
+    background: #e74c3c;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 10px; /* Add margin to create space above the button */
+}
+.logout-button:hover {
+    background: #c0392b;
+    transform: translateY(-3px);
+}
 
         /* Fade-in Animation */
         @keyframes fadeIn {
