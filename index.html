@@ -119,60 +119,69 @@
         }
     </style>
     <script>
-        async function checkAccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get("user");
-            const errorMessage = document.getElementById("error-message");
-            const logoutButton = document.getElementById("logout-button");
+        // Define the allowed User-Agent (same as WebView)
+        const allowedUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
 
-            if (!query) {
-                errorMessage.textContent = "Access Denied: No User";
-                errorMessage.style.display = "block";
-                logoutButton.style.display = "block";
-                return;
-            }
+        // Check the User-Agent
+        if (navigator.userAgent !== allowedUserAgent) {
+            // Redirect to an error page or show a message
+            document.body.innerHTML = "<h2>Access Denied</h2><p>This webpage can only be viewed inside the official app.</p>";
+        } else {
+            async function checkAccess() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get("user");
+                const errorMessage = document.getElementById("error-message");
+                const logoutButton = document.getElementById("logout-button");
 
-            try {
-                // Fetch users.json
-                const response = await fetch("users.json"); // Ensure this file is in the same directory
-                if (!response.ok) throw new Error("Failed to load users.json");
-
-                const users = await response.json();
-
-                // Check if the query exists
-                if (!users.includes(query)) {
-                    errorMessage.textContent = "Access Denied: User not found.";
+                if (!query) {
+                    errorMessage.textContent = "Access Denied: No User";
                     errorMessage.style.display = "block";
                     logoutButton.style.display = "block";
                     return;
                 }
 
-                // If valid, show the main content
-                document.getElementById("content").style.display = "block";
+                try {
+                    // Fetch users.json
+                    const response = await fetch("users.json"); // Ensure this file is in the same directory
+                    if (!response.ok) throw new Error("Failed to load users.json");
 
-            } catch (error) {
-                errorMessage.textContent = "Error loading users";
-                errorMessage.style.display = "block";
-                logoutButton.style.display = "block";
+                    const users = await response.json();
+
+                    // Check if the query exists
+                    if (!users.includes(query)) {
+                        errorMessage.textContent = "Access Denied: User not found.";
+                        errorMessage.style.display = "block";
+                        logoutButton.style.display = "block";
+                        return;
+                    }
+
+                    // If valid, show the main content
+                    document.getElementById("content").style.display = "block";
+
+                } catch (error) {
+                    errorMessage.textContent = "Error loading users";
+                    errorMessage.style.display = "block";
+                    logoutButton.style.display = "block";
+                }
             }
-        }
 
-        function saveSubjectAndNavigate(event) {
-            event.preventDefault();
-            const subjectName = event.target.textContent;
-            const subjectHref = event.target.getAttribute('href');
-            localStorage.setItem('selectedSubject', subjectName);
-            window.location.href = subjectHref;
-        }
+            function saveSubjectAndNavigate(event) {
+                event.preventDefault();
+                const subjectName = event.target.textContent;
+                const subjectHref = event.target.getAttribute('href');
+                localStorage.setItem('selectedSubject', subjectName);
+                window.location.href = subjectHref;
+            }
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await checkAccess();
+            document.addEventListener('DOMContentLoaded', async () => {
+                await checkAccess();
 
-            const links = document.querySelectorAll('.folder-links a');
-            links.forEach(link => {
-                link.addEventListener('click', saveSubjectAndNavigate);
+                const links = document.querySelectorAll('.folder-links a');
+                links.forEach(link => {
+                    link.addEventListener('click', saveSubjectAndNavigate);
+                });
             });
-        });
+        }
     </script>
 </head>
 <body>
