@@ -119,10 +119,6 @@
         }
     </style>
     <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
-        }
-
         async function checkAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get("user");
